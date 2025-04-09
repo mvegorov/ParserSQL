@@ -1,0 +1,28 @@
+Customers
+PRIMARY		NOT NULL				
+int	varchar	varchar	varchar	varchar	varchar	varchar
+CustomerID	CustomerName	ContactName	Address	City	PostalCode	Country
+2	Ana Trujillo Emparedados y helados	Ana Trujillo	Avda. de la Constitucion 2222	Mexico D.F.	05021	Mexico
+3	Antonio Moreno Taqueria	Antonio Moreno	Mataderos 2312	Mexico D.F.	05023	Mexico
+4	Around the Horn	Thomas Hardy	120 Hanover Sq.	London	WA1 1DP	UK
+5	Berglunds snabbkop	Christina Berglund	Berguvsvagen 8	Lulea	S-958 22	Sweden
+
+Orders
+NOT NULL	Customers.CustomerID	NOT NULL		
+int	int	int	varchar	int
+OrderID	CustomerID	EmployeeID	OrderDate	ShipperID
+10360	7	4	1996-11-22	3
+10362	9	3	1996-11-25	1
+10365	3	3	1996-11-27	2
+10383	4	8	1996-12-16	3
+10384	5	3	1996-12-16	3
+
+Suppliers
+PRIMARY		NOT NULL					
+int	varchar	varchar	varchar	varchar	varchar	varchar	varchar
+SupplierID	SupplierName	ContactName	Address	City	PostalCode	Country	Phone
+1	Exotic Liquid	Charlotte Cooper	49 Gilbert St.	Londona	EC1 4SD	UK	(171) 555-2222
+2	New Orleans Cajun Delights	Shelley Burke	P.O. Box 78934	New Orleans	70117	USA	(100) 555-4822
+3	Grandma Kelly's Homestead	Regina Murphy	707 Oxford Rd.	Ann Arbor	48104	USA	(313) 555-5735
+4	Tokyo Traders	Yoshi Nagase	9-8 Sekimai Musashino-shi	Tokyo	100	Japan	(03) 3555-5011
+5	Cooperativa de Quesos 'Las Cabras'	Antonio del Valle Saavedra	Calle del Rosal 4	Oviedo	33007	Spain	(98) 598 76 54
