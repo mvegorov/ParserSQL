@@ -423,7 +423,7 @@ bool SolveBooleanExpression(std::vector<std::string> &expression, int &index) {
     }
 }
 
-std::string MyCoolDB::Request(const std::string &request_string) {
+std::string MyCoolDB::Execute(const std::string &request_string) {
     std::map<std::string, std::vector<std::string>> request_map;
 
     SplitByKeywords(request_map, request_string);

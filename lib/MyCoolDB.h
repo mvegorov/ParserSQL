@@ -28,7 +28,7 @@ public:
     void save();
     ~MyCoolDB();
 
-    std::string Request(const std::string& request_string);
+    std::string Execute(const std::string& request_string);
 };
 
 

@@ -7,7 +7,7 @@ int main() {
         std::string request_string = "SELECT Orders.OrderID, Customers.CustomerName, Orders.OrderDate\n"
                                      "FROM Orders\n"
                                      "INNER JOIN Customers ON Orders.CustomerID=Customers.CustomerID;";
-        std::cout<<base.Request(request_string);
+        std::cout<< base.Execute(request_string);
     } catch (const Exception& ex) {
         std::cout<<ex.text;
     }

@@ -6,7 +6,7 @@ TEST(DBFormatTest, SimpleRequest) {
     MyCoolDB base("base_1.txt");
     std::string request = "SELECT CustomerName, City FROM Customers;";
 
-    ASSERT_NO_THROW(base.Request(request));
+    ASSERT_NO_THROW(base.Execute(request));
 }
 
 TEST(DBFormatTest, ValidSpaces) {
@@ -16,7 +16,7 @@ TEST(DBFormatTest, ValidSpaces) {
                                     FROM
                                     Customers;)";
 
-    ASSERT_NO_THROW(base.Request(request));
+    ASSERT_NO_THROW(base.Execute(request));
 }
 
 TEST(DBFormatTest, InvalidSpaces) {
@@ -26,8 +26,8 @@ TEST(DBFormatTest, InvalidSpaces) {
     std::string request2 = R"(SELECT Custom
                                     erName, City FR OM Customers;)";
 
-    ASSERT_ANY_THROW(base.Request(request1));
-    ASSERT_ANY_THROW(base.Request(request2));
+    ASSERT_ANY_THROW(base.Execute(request1));
+    ASSERT_ANY_THROW(base.Execute(request2));
 }
 
 TEST(DBFormatTest, InvalidAveragePunctuation) {
@@ -38,10 +38,10 @@ TEST(DBFormatTest, InvalidAveragePunctuation) {
     std::string request3 = "SELECT CustomerName City FROM Customers;";
     std::string request4 = "SELECT, CustomerName, City FROM Customers;";
 
-    ASSERT_ANY_THROW(base.Request(request1));
-    ASSERT_ANY_THROW(base.Request(request2));
-    ASSERT_ANY_THROW(base.Request(request3));
-    ASSERT_ANY_THROW(base.Request(request4));
+    ASSERT_ANY_THROW(base.Execute(request1));
+    ASSERT_ANY_THROW(base.Execute(request2));
+    ASSERT_ANY_THROW(base.Execute(request3));
+    ASSERT_ANY_THROW(base.Execute(request4));
 }
 
 TEST(DBFormatTest, ValidValuesPunctuation) {
@@ -52,8 +52,8 @@ VALUES (1, '2', '3', '4', '5', '6', '7');)";
     std::string request2 = R"(INSERT INTO Customers
 VALUES ( 1,  '2', '3', '4'  ,'5' , '6' ,'7' ) ;)";
 
-    ASSERT_NO_THROW(base.Request(request1));
-    ASSERT_NO_THROW(base.Request(request2));
+    ASSERT_NO_THROW(base.Execute(request1));
+    ASSERT_NO_THROW(base.Execute(request2));
 }
 
 TEST(DBFormatTest, InvalidValuesPunctuation) {
@@ -66,9 +66,9 @@ VALUES (1 '2' '3');)";
     std::string request3 = R"(INSERT INTO Customers
 VALUES (1,, '2', '3');)";
 
-    ASSERT_ANY_THROW(base.Request(request1));
-    ASSERT_ANY_THROW(base.Request(request2));
-    ASSERT_ANY_THROW(base.Request(request3));
+    ASSERT_ANY_THROW(base.Execute(request1));
+    ASSERT_ANY_THROW(base.Execute(request2));
+    ASSERT_ANY_THROW(base.Execute(request3));
 }
 
 TEST(DBFormatTest, ValidCreateTablePunctuation) {
@@ -80,24 +80,24 @@ TEST(DBFormatTest, ValidCreateTablePunctuation) {
  c int,
  d int, f int);)";
 
-    ASSERT_NO_THROW(base.Request(request1));
-    ASSERT_NO_THROW(base.Request(request2));
-    ASSERT_NO_THROW(base.Request(request3));
+    ASSERT_NO_THROW(base.Execute(request1));
+    ASSERT_NO_THROW(base.Execute(request2));
+    ASSERT_NO_THROW(base.Execute(request3));
 }
 
 TEST(DBFormatTest, InvalidCreateTablePunctuation) {
 
     MyCoolDB base("base_1.txt");
 
-    ASSERT_ANY_THROW(base.Request("CREATE TABLE Table1 (a int b int);"));
-    ASSERT_ANY_THROW(base.Request("CREATE TABLE Table1 (a, b int);"));
-    ASSERT_ANY_THROW(base.Request("CREATE TABLE Table1 a int, b int;"));
-    ASSERT_ANY_THROW(base.Request("CREATE TABLE Table1 (a int, b int,);"));
-    ASSERT_ANY_THROW(base.Request("CREATE TABLE Table1 (a int some_excess, b int);"));
-    ASSERT_ANY_THROW(base.Request("CREATE TABLE Table1 (a int, b int, some_excess);"));
-    ASSERT_ANY_THROW(base.Request("CREATE TABLE Table1 (a int PRMRY KY, b int);"));
-    ASSERT_ANY_THROW(base.Request("CREATE TABLE Table1 (a int, b int, PRIMARY KEY () );"));
-    ASSERT_ANY_THROW(base.Request("CREATE TABLE Table1 (a int, b int FOREIGN KEY REFERENCES);"));
+    ASSERT_ANY_THROW(base.Execute("CREATE TABLE Table1 (a int b int);"));
+    ASSERT_ANY_THROW(base.Execute("CREATE TABLE Table1 (a, b int);"));
+    ASSERT_ANY_THROW(base.Execute("CREATE TABLE Table1 a int, b int;"));
+    ASSERT_ANY_THROW(base.Execute("CREATE TABLE Table1 (a int, b int,);"));
+    ASSERT_ANY_THROW(base.Execute("CREATE TABLE Table1 (a int some_excess, b int);"));
+    ASSERT_ANY_THROW(base.Execute("CREATE TABLE Table1 (a int, b int, some_excess);"));
+    ASSERT_ANY_THROW(base.Execute("CREATE TABLE Table1 (a int PRMRY KY, b int);"));
+    ASSERT_ANY_THROW(base.Execute("CREATE TABLE Table1 (a int, b int, PRIMARY KEY () );"));
+    ASSERT_ANY_THROW(base.Execute("CREATE TABLE Table1 (a int, b int FOREIGN KEY REFERENCES);"));
 }
 
 TEST(DBFormatTest, ValidJoinPunctuation) {
@@ -113,46 +113,46 @@ LEFT JOIN Customers ON Orders.CustomerID = Customers.CustomerID;)";
 FROM Orders
 LEFT JOIN Customers   ON   Orders.CustomerID  =  Customers.CustomerID ;)";
 
-    ASSERT_NO_THROW(base.Request(request1));
-    ASSERT_NO_THROW(base.Request(request2));
-    ASSERT_NO_THROW(base.Request(request3));
+    ASSERT_NO_THROW(base.Execute(request1));
+    ASSERT_NO_THROW(base.Execute(request2));
+    ASSERT_NO_THROW(base.Execute(request3));
 }
 
 TEST(DBFormatTest, InvalidJoinPunctuation) {
 
     MyCoolDB base("base_9.txt");
 
-    ASSERT_ANY_THROW(base.Request(R"(SELECT Orders.OrderID
+    ASSERT_ANY_THROW(base.Execute(R"(SELECT Orders.OrderID
 FROM Orders
 LEFT JOIN Customers ON Orders.CustomerID Customers.CustomerID ;)"));
-    ASSERT_ANY_THROW(base.Request(R"(SELECT Orders.OrderID
+    ASSERT_ANY_THROW(base.Execute(R"(SELECT Orders.OrderID
 FROM Orders
 LEFT JOIN Customers ON Orders.CustomerID= ;)"));
-    ASSERT_ANY_THROW(base.Request(R"(SELECT Orders.OrderID
+    ASSERT_ANY_THROW(base.Execute(R"(SELECT Orders.OrderID
 FROM Orders
 LEFT JOIN ON Orders.CustomerID=Customers.CustomerID ;)"));
-    ASSERT_ANY_THROW(base.Request(R"(SELECT .OrderID
+    ASSERT_ANY_THROW(base.Execute(R"(SELECT .OrderID
 FROM Orders
 LEFT JOIN Customers ON Orders.CustomerID=Customers.CustomerID ;)"));
-    ASSERT_ANY_THROW(base.Request(R"(SELECT Orders.
+    ASSERT_ANY_THROW(base.Execute(R"(SELECT Orders.
 FROM Orders
 LEFT JOIN Customers ON Orders.CustomerID=Customers.CustomerID ;)"));
-    ASSERT_ANY_THROW(base.Request(R"(SELECT .
+    ASSERT_ANY_THROW(base.Execute(R"(SELECT .
 FROM Orders
 LEFT JOIN Customers ON Orders.CustomerID=Customers.CustomerID ;)"));
-    ASSERT_ANY_THROW(base.Request(R"(SELECT Orders.OrderID
+    ASSERT_ANY_THROW(base.Execute(R"(SELECT Orders.OrderID
 FROM Orders
 LEFT RIGHT JOIN Customers ON Orders.CustomerID=Customers.CustomerID ;)"));
-    ASSERT_ANY_THROW(base.Request(R"(SELECT Orders.OrderID
+    ASSERT_ANY_THROW(base.Execute(R"(SELECT Orders.OrderID
 FROM Orders
 LEFT Customers ON Orders.CustomerID.=Customers.CustomerID ;)"));
-    ASSERT_ANY_THROW(base.Request(R"(SELECT Orders. OrderID
+    ASSERT_ANY_THROW(base.Execute(R"(SELECT Orders. OrderID
 FROM Orders
 LEFT JOIN Customers ON Orders. CustomerID=Customers. CustomerID ;)"));
-    ASSERT_ANY_THROW(base.Request(R"(SELECT Orders .OrderID
+    ASSERT_ANY_THROW(base.Execute(R"(SELECT Orders .OrderID
 FROM Orders
 LEFT JOIN Customers ON Orders .CustomerID=Customers .CustomerID ;)"));
-    ASSERT_ANY_THROW(base.Request(R"(SELECT Orders OrderID
+    ASSERT_ANY_THROW(base.Execute(R"(SELECT Orders OrderID
 FROM Orders
 LEFT JOIN Customers ON Orders CustomerID=Customers CustomerID ;)"));
 }
